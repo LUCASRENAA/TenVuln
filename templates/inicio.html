@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Lilita One' rel='stylesheet'>
+
+<link rel="style" type="text/css" href="/static/css/style.css">
+<style>
+    body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  /* rtl:raw:
+  right: 0;
+  */
+  bottom: 0;
+  /* rtl:remove */
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 0px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #727272;
+}
+
+.sidebar .nav-link.active {
+  color: #2470dc;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+</style>
+
+
+ {% include "cabeca.html" %}
+
+
+
+
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+
+
+
+
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+</head>
+<body>
+
+ {% include "padrao_inicio.html" %}
+
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Naner Luner</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="#">Sign out</a>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">
+              <span data-feather="home"></span>
+              Quebra de Controle de Acesso
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="file"></span>
+              Falhas Criptográficas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="shopping-cart"></span>
+              Injeção
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="users"></span>
+               Design Inseguro
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="bar-chart-2"></span>
+              Configuração Incorreta de Segurança
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+              Componentes Vulneráveis e Desatualizados
+            </a>
+          </li>
+
+           <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+            Falhas de Identificação e Autenticação
+            </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+Falhas de integridade de software e dados
+            </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+            Falhas de registro e monitoramento de segurança
+            </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span data-feather="layers"></span>
+ Falsificação de solicitação do lado do servidor (SSRF)            </a>
+          </li>
+        </ul>
+
+
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Quebra de controle de acesso</h1>
+
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+
+          </div>
+
+        </div>
+      </div>
+Visão Geral
+Saindo da quinta posição, 94% dos aplicativos foram testados para alguma forma de controle de acesso quebrado com a taxa de incidência média de 3,81% e tem o maior número de ocorrências no conjunto de dados contribuído com mais de 318 mil. Notável Common Weakness Enumerations (CWEs) incluídas são CWE-200: Exposição de Informações Confidenciais a um Ator Não Autorizado, CWE-201: Exposição de Informações Confidenciais por meio de Dados Enviados e CWE-352: requisições forjadas entre sites.
+
+        <p></p>
+            <p>Tente descobrir essa vulnerabilidade (Encontre mensagem de outras pessoas aqui em baixo)</p>
+
+
+        <h1>Suas mensagens</h1>
+        {% for mensagens in chat %}
+                <p>De: {{ mensagens.de }}</p>
+
+        <p>Mensagem:<p></p> <textarea disabled> {{ mensagens.mensagem }} </textarea></p>
+
+                <p>Para: {{ mensagens.para }}</p>
+
+        {% endfor %}
+        <p></p>
+
+
+      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+      <h2>Section title</h2>
+
+
+          <p>Tente descobrir essa vulnerabilidade</p>
+        <i>O escopo é o http://127.0.0.1:8000/parte1/</i>
+<p></p>
+        <p>Digite a chave aqui: </p>
+        <input name="key" class="form-control">
+<link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+  {% include "padrao_fim.html" %}
+
+
+</body>
+</html>
