@@ -1,0 +1,58 @@
+
+Visão Geral
+Saindo da quinta posição, 94% dos aplicativos foram testados para alguma forma de controle de acesso quebrado com a taxa de incidência média de 3,81% e tem o maior número de ocorrências no conjunto de dados contribuído com mais de 318 mil. Notável Common Weakness Enumerations (CWEs) incluídas são CWE-200: Exposição de Informações Confidenciais a um Ator Não Autorizado, CWE-201: Exposição de Informações Confidenciais por meio de Dados Enviados e CWE-352: requisições forjadas entre sites.
+
+        <p></p>
+            <p>Tente descobrir essa vulnerabilidade (Encontre mensagem de outras pessoas aqui em baixo)</p>
+
+
+        <h1>Suas mensagens</h1>
+        {% for mensagens in chat %}
+
+
+
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{ mensagens.id }}">
+  <p>De: {{ mensagens.de }} ({{ mensagens.id }})</p>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ mensagens.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">De: {{ mensagens.de }} <p>Para: {{ mensagens.para }}</p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+               <p > {{ mensagens.mensagem }} </p>
+
+      </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {% endfor %}
+        <p></p>
+<!-- Button trigger modal -->
+
+
+      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+      <h2>Section title</h2>
+
+
+          <p>Tente descobrir essa vulnerabilidade</p>
+        <i>O escopo é o http://127.0.0.1:8000/parte1/</i>
+<p></p>
+        <p>Digite a chave aqui: </p>
+        <input name="key" class="form-control">

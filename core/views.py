@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -79,6 +80,7 @@ def submit_registro(request):
 @login_required(login_url='/login/')
 def inicio(request):
     ola = "alo"
+    titulo = "Quebra de controle de acesso"
     try:
         id = int(request.GET['id'])
     except:
@@ -95,24 +97,67 @@ def inicio(request):
         Chat.objects.create(titulo = "Senha", de= capotei,para=lucas,mensagem="Minha senha é: 546789")
         Chat.objects.create(titulo = "Senha", de= lucas,para=roberto,mensagem="Minha senha é: 546789")
 
-        return render(request,'inicio.html')
+        return render(request,'inicio.html',{'pagina':1,'titulo':titulo})
 
     except:
-        import psycopg2
-        con = psycopg2.connect(host='localhost', database='senhas',
-                               user='postgres', password='postgresql')
-        cur = con.cursor()
-        sql = "select * from core_senhas"
 
-        cur.execute(sql)
-        recset = cur.fetchall()
-        for rec in recset:
-            print(rec)
-        con.close()
 
         chat = Chat.objects.filter(para=User(id))
-        return render(request,'inicio.html',{'chat':chat})
 
+        return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo})
+
+
+@login_required(login_url='/login/')
+def vuln1(request):
+    ola = "alo"
+    titulo = "Quebra de controle de acesso"
+    try:
+        id = int(request.GET['id'])
+    except:
+        id = request.user.id
+        return redirect(f'/vuln1/?id={id}')
+
+    chat = Chat.objects.filter(para=User(id))
+
+    return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo})
+@login_required(login_url='/login/')
+def vuln2(request):
+    titulo = "Falhas Criptograficas"
+
+    return render(request,'inicio.html',{'titulo':titulo,'pagina':2})
+
+@login_required(login_url='/login/')
+def vuln3(request):
+    titulo = "Injeção"
+
+    """
+    # código para testar o sql injection
+    import psycopg2
+    con = psycopg2.connect(host='localhost', database='senhas',
+                           user='postgres', password='postgresql')
+    cur = con.cursor()
+    sql = "select * from core_senhas "
+
+    cur.execute(sql)
+    recset = cur.fetchall()
+    for rec in recset:
+        print(rec)
+    con.close()
+    """
+
+    return render(request,'inicio.html',{'titulo':titulo,'pagina':3})
+
+@login_required(login_url='/login/')
+def vuln3_submit(request):
+    titulo = "Injeção"
+    import os
+    if request.POST:
+        ip = request.POST.get('ip')
+        res = subprocess.check_output(f'ping -n 1 {ip}', shell=True)
+        print(res)
+        print(type(str(res)))
+
+    return render(request,'inicio.html',{'titulo':titulo,'pagina':3,'saida':str(res)})
 
 def adminsite(request):
     """

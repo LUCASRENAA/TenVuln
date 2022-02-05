@@ -149,19 +149,19 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <a class="nav-link active" aria-current="page" href="/vuln1">
               <span data-feather="home"></span>
               Quebra de Controle de Acesso
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/vuln2">
               <span data-feather="file"></span>
               Falhas Criptográficas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/vuln3">
               <span data-feather="shopping-cart"></span>
               Injeção
             </a>
@@ -210,12 +210,12 @@ Falhas de integridade de software e dados
           </li>
         </ul>
 
-
+      </div>
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Quebra de controle de acesso</h1>
+        <h1 class="h2">{{ titulo }}</h1>
 
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
@@ -224,35 +224,18 @@ Falhas de integridade de software e dados
 
         </div>
       </div>
-Visão Geral
-Saindo da quinta posição, 94% dos aplicativos foram testados para alguma forma de controle de acesso quebrado com a taxa de incidência média de 3,81% e tem o maior número de ocorrências no conjunto de dados contribuído com mais de 318 mil. Notável Common Weakness Enumerations (CWEs) incluídas são CWE-200: Exposição de Informações Confidenciais a um Ator Não Autorizado, CWE-201: Exposição de Informações Confidenciais por meio de Dados Enviados e CWE-352: requisições forjadas entre sites.
+        {% if pagina == 1 %}
+ {% include "vulnerabilidade1.html" %}
+        {% endif %}
 
-        <p></p>
-            <p>Tente descobrir essa vulnerabilidade (Encontre mensagem de outras pessoas aqui em baixo)</p>
-
-
-        <h1>Suas mensagens</h1>
-        {% for mensagens in chat %}
-                <p>De: {{ mensagens.de }}</p>
-
-        <p>Mensagem:<p></p> <textarea disabled> {{ mensagens.mensagem }} </textarea></p>
-
-                <p>Para: {{ mensagens.para }}</p>
-
-        {% endfor %}
-        <p></p>
+           {% if pagina == 2 %}
+ {% include "vulnerabilidade2.html" %}
+        {% endif %}
 
 
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-      <h2>Section title</h2>
-
-
-          <p>Tente descobrir essa vulnerabilidade</p>
-        <i>O escopo é o http://127.0.0.1:8000/parte1/</i>
-<p></p>
-        <p>Digite a chave aqui: </p>
-        <input name="key" class="form-control">
+                   {% if pagina == 3 %}
+ {% include "vulnerabilidade3.html" %}
+        {% endif %}
 <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
   <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

@@ -20,3 +20,10 @@ class Chat(models.Model):
     de = models.ForeignKey(User, models.CASCADE, related_name='de')
     mensagem = models.CharField(max_length=50)
     para = models.ForeignKey(User, models.CASCADE, related_name='para')
+
+
+class Pontuacao(models.Model):
+
+    usuario = models.ForeignKey(User, models.CASCADE, related_name='pontuacao')
+    pontuacao = models.IntegerField()
+
