@@ -108,6 +108,11 @@ def inicio(request):
 
 
 @login_required(login_url='/login/')
+def telainicial(request):
+    return render(request, 'telainicial.html')
+
+
+@login_required(login_url='/login/')
 def vuln1(request):
     ola = "alo"
     titulo = "Quebra de controle de acesso"
