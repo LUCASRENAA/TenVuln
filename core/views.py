@@ -22,7 +22,7 @@ import time
 
 # Create your views here
 #from core.models import Produto
-from core.models import Senhas, Chat
+from core.models import Senhas, Chat, Questao, QuestaoUsuario, Pontuacao
 
 
 def login_user(request):
@@ -78,14 +78,91 @@ def submit_registro(request):
 
 
 @login_required(login_url='/login/')
-def inicio(request):
-    ola = "alo"
+def resposta(request,pagina):
+
+    if int(pagina) == 1:
+        resposta = request.POST.get('resposta')
+        if resposta == "546789":
+            resposta = "Você acertou"
+            print("resposta")
+            questao = QuestaoUsuario.objects.get(questao= Questao.objects.get(questao="Quebra de controle de acesso"), usuario = User.objects.get(id= request.user.id))
+            if  questao.boleean == False:
+                questao.boleean = True
+                questao.save()
+                pontuacao = Pontuacao.objects.get(usuario = User.objects.get(id= request.user.id))
+                pontuacao.pontuacao = pontuacao.pontuacao + 10
+                pontuacao.save()
+
+
+        else:
+            resposta = "Você errou"
+
+        return HttpResponse(f'{resposta}')
+
+    if int(pagina) == 2:
+        resposta = request.POST.get('resposta')
+        resposta2 = request.POST.get('resposta2')
+
+        if resposta == "miau123":
+            resposta = "Você acertou a primeira questão"
+        else:
+            resposta = "Você errou a primeira questão"
+        if resposta2 == "asfgasfasfsa":
+            resposta2 = "Você acertou a segunda questão"
+        else:
+            resposta2 = "Você errou a segunda questão"
+        return HttpResponse(f'{resposta} : {resposta2} ')
+
+def funcaoCriarPontuacao(usuario):
+    print(usuario)
+    questoes_objetos = Questao.objects.all()
+
+    for questoes in questoes_objetos:
+        verificarExistenciaQuestaoJogador(User.objects.get(id = usuario),questoes)
+
+    try:
+        Pontuacao.objects.get(usuario = User.objects.get(id = usuario) )
+    except:
+        Pontuacao.objects.create(usuario = User.objects.get(id = usuario), pontuacao = 0 )
+
+
+
+
+def verificarExistenciaQuestao(questao):
+    try:
+        Questao.objects.get(questao = questao)
+    except:
+        Questao.objects.create(questao = questao)
+def verificarExistenciaQuestaoJogador(usuario,questao):
+
+    try:
+        QuestaoUsuario.objects.get(usuario = usuario,questao = questao )
+    except:
+        QuestaoUsuario.objects.create(usuario = usuario, questao = questao, boleean= False)
+def criarQuestoes():
+    questoes = []
+    questoes.append("Quebra de controle de acesso")
+    questoes.append("Falhas criptográficas")
+    questoes.append("Falhas criptográficas 2")
+
+    for questao in questoes:
+        verificarExistenciaQuestao(questao)
+
+
+@login_required(login_url='/login/')
+def inicio(request,pagina):
+    criarQuestoes()
+    funcaoCriarPontuacao(request.user.id)
+
+
+    print("alouuu")
+
     titulo = "Quebra de controle de acesso"
     try:
         id = int(request.GET['id'])
     except:
         id = request.user.id
-        return redirect(f'/inicio/?id={id}')
+        return redirect(f'/inicio/{pagina}/?id={id}')
     try:
         roberto = User.objects.create_user(str("Roberto"),"" , str("Teste1234564"))
         lucas = User.objects.create_user(str("Lucas"),"" , str("78997"))
@@ -100,11 +177,61 @@ def inicio(request):
         return render(request,'inicio.html',{'pagina':1,'titulo':titulo})
 
     except:
+        if int(pagina) == 1:
+            questao = "Quebra de controle de acesso"
+            resposta = QuestaoUsuario.objects.get(usuario = User.objects.get(id=request.user.id),questao=Questao.objects.get(questao = "Quebra de controle de acesso"))
 
 
-        chat = Chat.objects.filter(para=User(id))
+            chat = Chat.objects.filter(para=User(id))
 
-        return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo})
+            return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo,'questao':questao,'resposta':resposta})
+        if int(pagina) == 2:
+            titulo = "Falhas Criptograficas"
+
+            return render(request, 'inicio.html', {'titulo': titulo, 'pagina': 2})
+
+        if int(pagina) == 3:
+            titulo = "Injeção"
+
+            return render(request, 'inicio.html', {'titulo': titulo, 'pagina': 3})
+
+
+
+        if int(pagina) == 4:
+            titulo = "Design Inseguro"
+
+
+            return render(request, 'inicio.html', {'pagina': 4, 'titulo': titulo})
+
+        if int(pagina) == 5:
+            titulo = "Configuração Incorreta de Segurança"
+
+
+            return render(request, 'inicio.html', {'pagina': 5, 'titulo': titulo})
+
+        if int(pagina) == 6:
+            titulo = "Componentes Vulneráveis e Desatualizados"
+            return render(request, 'inicio.html', {'pagina': 6,  'titulo': titulo})
+
+        if int(pagina) == 7:
+            titulo = "Falhas de Identificação e Autenticação"
+
+            return render(request, 'inicio.html', {'pagina': 7,  'titulo': titulo})
+
+        if int(pagina) == 8:
+            titulo = "Falhas de integridade de software e dados"
+
+            return render(request, 'inicio.html', {'pagina': 8,  'titulo': titulo})
+
+        if int(pagina) == 9:
+            titulo = "Falhas de registro e monitoramento de segurança"
+
+            return render(request, 'inicio.html', {'pagina': 9,  'titulo': titulo})
+
+        if int(pagina) == 10:
+            titulo = "Falsificação de solicitação do lado do servidor (SSRF)"
+            return render(request, 'inicio.html', {'pagina': 10,  'titulo': titulo})
+
 
 
 @login_required(login_url='/login/')
@@ -132,7 +259,9 @@ def vuln2(request):
     return render(request,'inicio.html',{'titulo':titulo,'pagina':2})
 
 @login_required(login_url='/login/')
-def vuln3(request):
+def vuln4(request,id):
+    if id == 1:
+        pass
     titulo = "Injeção"
 
     """

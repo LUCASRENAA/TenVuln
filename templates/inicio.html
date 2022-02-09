@@ -4,6 +4,10 @@
 <html lang="en">
 <head>
     <link href='https://fonts.googleapis.com/css?family=Lilita One' rel='stylesheet'>
+<scritpt>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</scritpt>
 
 <link rel="style" type="text/css" href="/static/css/style.css">
 <style>
@@ -131,7 +135,7 @@
 
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Naner Luner</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">TenVuln</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -149,62 +153,62 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/vuln1">
+            <a class="nav-link active" aria-current="page" href="/inicio/1/">
               <span data-feather="home"></span>
               Quebra de Controle de Acesso
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/vuln2">
+            <a class="nav-link active" aria-current="page" href="/inicio/2/">
               <span data-feather="file"></span>
               Falhas Criptográficas
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/vuln3">
+            <a class="nav-link active" aria-current="page" href="/inicio/3/">
               <span data-feather="shopping-cart"></span>
               Injeção
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/4/">
               <span data-feather="users"></span>
                Design Inseguro
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/5/">
               <span data-feather="bar-chart-2"></span>
               Configuração Incorreta de Segurança
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/6/">
               <span data-feather="layers"></span>
               Componentes Vulneráveis e Desatualizados
             </a>
           </li>
 
            <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/7/">
               <span data-feather="layers"></span>
             Falhas de Identificação e Autenticação
             </a>
           </li>
            <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/8/">
               <span data-feather="layers"></span>
 Falhas de integridade de software e dados
             </a>
           </li>
            <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/9/">
               <span data-feather="layers"></span>
             Falhas de registro e monitoramento de segurança
             </a>
           </li>
            <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link active" aria-current="page" href="/inicio/10/">
               <span data-feather="layers"></span>
  Falsificação de solicitação do lado do servidor (SSRF)            </a>
           </li>
@@ -215,8 +219,12 @@ Falhas de integridade de software e dados
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">{{ titulo }}</h1>
+        <h1 class="h2">{{ titulo }}</h1> {{ questao }}
 
+          {% if  resposta.boleean == False %}
+          <p></p>
+          Olha, você ainda não respondeu essa questão
+          {% endif %}
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
 
@@ -235,6 +243,36 @@ Falhas de integridade de software e dados
 
                    {% if pagina == 3 %}
  {% include "vulnerabilidade3.html" %}
+        {% endif %}
+
+            {% if pagina == 4 %}
+ {% include "vulnerabilidade4.html" %}
+        {% endif %}
+
+
+            {% if pagina == 5 %}
+ {% include "vulnerabilidade5.html" %}
+        {% endif %}
+
+            {% if pagina == 6 %}
+ {% include "vulnerabilidade6.html" %}
+        {% endif %}
+
+
+            {% if pagina == 7 %}
+ {% include "vulnerabilidade7.html" %}
+        {% endif %}
+
+            {% if pagina == 8 %}
+ {% include "vulnerabilidade8.html" %}
+        {% endif %}
+
+            {% if pagina == 9 %}
+ {% include "vulnerabilidade9.html" %}
+        {% endif %}
+
+            {% if pagina == 10 %}
+ {% include "vulnerabilidade10.html" %}
         {% endif %}
 <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 

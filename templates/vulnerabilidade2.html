@@ -1,8 +1,14 @@
 Subindo uma posição para #2, anteriormente conhecido como Exposição de Dados Sensíveis, que é mais um sintoma amplo do que uma causa raiz, o foco está nas falhas relacionadas à criptografia (ou falta dela). O que muitas vezes leva à exposição de dados confidenciais. Notável Common Weakness Enumerations (CWEs) incluídas são CWE-259: Uso de Senha no Código, CWE-327: Algoritmo Criptográfico Quebrado ou Arriscado e CWE-331 Entropia Insuficiente.
 
+<scritpt>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</scritpt>
+
 
 <p></p>
 Por exemplo, você invandiu um sistema e pegou uma tabela com usuario e senha, descubra as senhas de cada usuário
+ <form action ="submit" method="post">{% csrf_token %}
 
 <table class="table">
   <tr>
@@ -14,13 +20,79 @@ Por exemplo, você invandiu um sistema e pegou uma tabela com usuario e senha, d
      <tr>
     <td>Lucas</td>
     <td>cec3a556f02910a93e50cfbaf67c86ab</td>
-             <td><input class="form-control"></td>
+             <td><input id="resposta" class="form-control"></td>
 
   </tr>
   <tr>
     <td>Higor</td>
     <td>50d5ea62145eb80e18600b51c75219d1</td>
-                   <td><input class="form-control"></td>
+                   <td><input id="resposta2"class="form-control"></td>
 
   </tr>
 </table>
+ </form>
+<button type="button" class="form-control btn btn-dark" data-toggle="modal" data-target="#exampleModal{{ mensagens.id }}" onclick="enviarResposta()">
+  <p>Salvar</p>
+</button>
+
+<script>
+
+    function enviarResposta() {
+
+var elemento = document.getElementById("resposta").value;
+
+var elemento2 = document.getElementById("resposta2").value;
+
+
+
+ $.ajax({
+ method: "POST",
+ url: "resposta",
+ data: { resposta: elemento,resposta2: elemento2, pagina: "{{ pagina }}",csrfmiddlewaretoken:"{{ csrf_token }}" },
+  beforeSend : function(){
+          $("#demo").html("ENVIANDO...");
+     }
+})
+.done(function(msg){
+     $("#demo").html(msg);
+document.getElementById("girando").remove()
+})
+.fail(function(jqXHR, textStatus, msg){
+     alert(msg);
+     document.getElementById("girando").remove()
+
+});
+}
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ mensagens.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><p>Resposta</p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<div id="girando" class="spinner-border" role="status">
+  <span class="visually-hidden"></span>
+</div>
+          <p id="demo"></p>
+
+      </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Button trigger modal -->
+
+
+
+

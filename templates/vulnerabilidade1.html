@@ -7,6 +7,11 @@ Saindo da quinta posição, 94% dos aplicativos foram testados para alguma forma
 
 
         <h1>Suas mensagens</h1>
+<scritpt>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</scritpt>
+
         {% for mensagens in chat %}
 
 
@@ -55,4 +60,68 @@ Saindo da quinta posição, 94% dos aplicativos foram testados para alguma forma
         <i>O escopo é o http://127.0.0.1:8000/parte1/</i>
 <p></p>
         <p>Digite a chave aqui: </p>
-        <input name="key" class="form-control">
+ <form action ="submit" method="post">{% csrf_token %}
+
+        <input id="resposta" class="form-control">
+
+<button type="button" class="form-control btn btn-dark" data-toggle="modal" data-target="#exampleModal{{ mensagens.id }}2" onclick="enviarResposta()">
+  <p>Salvar</p>
+</button>
+</form>
+<script>
+
+    function enviarResposta() {
+
+var elemento = document.getElementById("resposta").value;
+
+
+
+
+ $.ajax({
+ method: "POST",
+ url: "resposta",
+ data: { resposta: elemento, pagina: "{{ pagina }}",csrfmiddlewaretoken:"{{ csrf_token }}" },
+  beforeSend : function(){
+          $("#demo").html("ENVIANDO...");
+     }
+})
+.done(function(msg){
+     $("#demo").html(msg);
+     document.getElementById("girando").remove();
+
+})
+.fail(function(jqXHR, textStatus, msg){
+     alert(msg);
+     document.getElementById("girando").remove();
+
+});
+}
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ mensagens.id }}2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2"><p>Carregando...</p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<div class="spinner-border" role="status" id="girando">
+  <span class="visually-hidden"></span>
+</div>
+          <p id="demo"></p>
+
+      </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

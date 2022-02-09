@@ -27,3 +27,16 @@ class Pontuacao(models.Model):
     usuario = models.ForeignKey(User, models.CASCADE, related_name='pontuacao')
     pontuacao = models.IntegerField()
 
+
+class Questao(models.Model):
+    questao = models.CharField(max_length=50)
+
+    def __str__(self):
+            return self.questao
+
+
+class QuestaoUsuario(models.Model):
+
+    usuario = models.ForeignKey(User, models.CASCADE)
+    questao = models.ForeignKey(Questao, models.CASCADE)
+    boleean = models.BooleanField()

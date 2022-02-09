@@ -27,18 +27,10 @@ urlpatterns = [
                   path('registro/submit', views.submit_registro),
 
                   path('inicio/',views.telainicial),
-                  path('vuln1/', views.vuln1),
-                  path('vuln2/', views.vuln2),
-                  path('vuln3/', views.vuln3),
                   path('vuln3/submit', views.vuln3_submit),
 
-                  path('vuln4/', views.inicio),
-                  path('vuln5/', views.inicio),
-                  path('vuln6/', views.inicio),
-                  path('vuln7/', views.inicio),
-                  path('vuln8/', views.inicio),
-                  path('vuln9/', views.inicio),
-                  path('vuln10/', views.inicio),
+                  path('inicio/<pagina>/', views.inicio),
+                  path('inicio/<pagina>/resposta', views.resposta),
 
                   path('parte1/administrador', views.adminsite),
 
