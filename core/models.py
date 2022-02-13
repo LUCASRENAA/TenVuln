@@ -28,8 +28,17 @@ class Pontuacao(models.Model):
     pontuacao = models.IntegerField()
 
 
-class Questao(models.Model):
+class OWASP(models.Model):
+    titulo = models.CharField(max_length=50)
+    posicao = models.IntegerField()
+    ano = models.IntegerField()
+    def __str__(self):
+            return self.titulo+ ": "+ str(self.ano)
+
+class QuestaoResposta(models.Model):
     questao = models.CharField(max_length=50)
+    resposta = models.CharField(max_length=50)
+    owasp = models.ForeignKey(OWASP, models.CASCADE)
 
     def __str__(self):
             return self.questao
@@ -38,5 +47,5 @@ class Questao(models.Model):
 class QuestaoUsuario(models.Model):
 
     usuario = models.ForeignKey(User, models.CASCADE)
-    questao = models.ForeignKey(Questao, models.CASCADE)
+    questao = models.ForeignKey(QuestaoResposta, models.CASCADE)
     boleean = models.BooleanField()

@@ -4,9 +4,9 @@ A Injeção desliza para a terceira posição. 94% das aplicações foram testad
 
 <h1>Pingue uma máquina</h1>
 
- <form action ="submit" method="post">{% csrf_token %}
+ <form action ="/vuln3/submit" method="post">{% csrf_token %}
 
-<input name="ip" class="form-control">        <button type="submit">Pingar</button>
+<input name="ip" class="form-control">        <button type="/vuln3/submit">Pingar</button>
 
      <p></p>
     {{ saida }}

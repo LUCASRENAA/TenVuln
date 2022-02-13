@@ -22,7 +22,7 @@ import time
 
 # Create your views here
 #from core.models import Produto
-from core.models import Senhas, Chat, Questao, QuestaoUsuario, Pontuacao
+from core.models import Senhas, Chat, QuestaoResposta, QuestaoUsuario, Pontuacao, OWASP
 
 
 def login_user(request):
@@ -75,47 +75,68 @@ def submit_registro(request):
         return redirect('/')
     return HttpResponse('<h1> faça um post </h1>')
 
+def somarPontuacao(usuario):
+    pontuacao = Pontuacao.objects.get(usuario=usuario)
+    pontuacao.pontuacao = pontuacao.pontuacao + 10
+    pontuacao.save()
+    return pontuacao
 
+def pegarResposta(questao,usuario):
+    questao = QuestaoUsuario.objects.get(questao=questao, usuario=usuario)
+    if questao.boleean == False:
+        questao.boleean = True
+        questao.save()
+        pontuacao = somarPontuacao(usuario)
 
-@login_required(login_url='/login/')
-def resposta(request,pagina):
-
-    if int(pagina) == 1:
-        resposta = request.POST.get('resposta')
-        if resposta == "546789":
+def verificarResposta(pagina,resposta,questao,usuario):
+    if resposta == questao.resposta:
             resposta = "Você acertou"
             print("resposta")
-            questao = QuestaoUsuario.objects.get(questao= Questao.objects.get(questao="Quebra de controle de acesso"), usuario = User.objects.get(id= request.user.id))
-            if  questao.boleean == False:
-                questao.boleean = True
-                questao.save()
-                pontuacao = Pontuacao.objects.get(usuario = User.objects.get(id= request.user.id))
-                pontuacao.pontuacao = pontuacao.pontuacao + 10
-                pontuacao.save()
+            pegarResposta(questao,usuario)
 
-
-        else:
+    else:
             resposta = "Você errou"
 
+
+    return resposta
+
+@login_required(login_url='/login/')
+def submit_teste(request, pagina):
+    usuario = User.objects.get(id=request.user.id)
+    if int(pagina) == 7:
+        resposta = request.POST.get('resposta')
+        questao = QuestaoResposta.objects.get(questao="Falhas de Identificação e Autenticação(BruteForce)")
+        resposta = verificarResposta(int(pagina),resposta,questao,usuario )
+        return HttpResponse(f'{resposta}')
+@login_required(login_url='/login/')
+def resposta(request,pagina,ano):
+    usuario = User.objects.get(id= request.user.id)
+    if int(pagina) == 1:
+        resposta = request.POST.get('resposta')
+        questao = QuestaoResposta.objects.get(questao="Quebra de controle de acesso")
+        resposta = verificarResposta(int(pagina),resposta,questao,usuario )
         return HttpResponse(f'{resposta}')
 
     if int(pagina) == 2:
         resposta = request.POST.get('resposta')
+        questao = QuestaoResposta.objects.get(questao="Falhas criptográficas")
+        resposta = verificarResposta(int(pagina), resposta, questao, usuario)
         resposta2 = request.POST.get('resposta2')
+        questao2 = QuestaoResposta.objects.get(questao="Falhas criptográficas 2")
+        resposta2 = verificarResposta(int(pagina), resposta2, questao2, usuario)
 
-        if resposta == "miau123":
-            resposta = "Você acertou a primeira questão"
-        else:
-            resposta = "Você errou a primeira questão"
-        if resposta2 == "asfgasfasfsa":
-            resposta2 = "Você acertou a segunda questão"
-        else:
-            resposta2 = "Você errou a segunda questão"
+
         return HttpResponse(f'{resposta} : {resposta2} ')
+    if int(pagina) == 7:
+        resposta = request.POST.get('user')
+        resposta2 = request.POST.get('password')
 
+        questao = QuestaoResposta.objects.get(questao="Falhas de Identificação e Autenticação")
+        resposta = verificarResposta(int(pagina),f'{resposta}:{resposta2}',questao,usuario )
+        return HttpResponse(f'{resposta}')
 def funcaoCriarPontuacao(usuario):
     print(usuario)
-    questoes_objetos = Questao.objects.all()
+    questoes_objetos = QuestaoResposta.objects.all()
 
     for questoes in questoes_objetos:
         verificarExistenciaQuestaoJogador(User.objects.get(id = usuario),questoes)
@@ -128,11 +149,16 @@ def funcaoCriarPontuacao(usuario):
 
 
 
-def verificarExistenciaQuestao(questao):
+def verificarExistenciaQuestao(questao,resposta,owasp):
     try:
-        Questao.objects.get(questao = questao)
+        QuestaoResposta.objects.get(questao = questao,resposta=resposta)
     except:
-        Questao.objects.create(questao = questao)
+        QuestaoResposta.objects.create(questao = questao,resposta=resposta,owasp = owasp)
+def verificarExistenciaOwasp(titulo,posicao,ano):
+    try:
+        OWASP.objects.get(titulo = titulo,posicao=posicao,ano=ano)
+    except:
+        OWASP.objects.create(titulo = titulo,posicao=posicao,ano=ano)
 def verificarExistenciaQuestaoJogador(usuario,questao):
 
     try:
@@ -141,20 +167,101 @@ def verificarExistenciaQuestaoJogador(usuario,questao):
         QuestaoUsuario.objects.create(usuario = usuario, questao = questao, boleean= False)
 def criarQuestoes():
     questoes = []
-    questoes.append("Quebra de controle de acesso")
-    questoes.append("Falhas criptográficas")
-    questoes.append("Falhas criptográficas 2")
+    owasp_vetor = []
+    class Questao_Formar:
+        def __init__(self, titulo, resposta):
+            self.name = titulo
+            self.resposta = resposta
 
+
+    owasp_vai = OWASP.objects.get(titulo = "Quebra de controle de acesso",ano = 2021)
+    owasp_vetor.append(owasp_vai)
+    questao_teste = Questao_Formar("Quebra de controle de acesso","546789")
+    questoes.append(questao_teste)
+
+    questao_teste = Questao_Formar("Falhas criptográficas", "miau123")
+    questoes.append(questao_teste)
+
+    owasp_vai = OWASP.objects.get(titulo="Falhas criptográficas", ano=2021)
+    owasp_vetor.append(owasp_vai)
+
+    questao_teste = Questao_Formar("Falhas criptográficas 2", "asfgasfasfsa")
+    questoes.append(questao_teste)
+
+    owasp_vai = OWASP.objects.get(titulo="Falhas criptográficas", ano=2021)
+    owasp_vetor.append(owasp_vai)
+
+    questao_teste = Questao_Formar("Falhas de Identificação e Autenticação(BruteForce)", "admin:admin")
+    questoes.append(questao_teste)
+
+    owasp_vai = OWASP.objects.get(titulo="Falhas de Identificação e Autenticação", ano=2021)
+    owasp_vetor.append(owasp_vai)
+
+    questao_teste = Questao_Formar("Configuração Incorreta de Segurança", "suporte:suporte")
+    questoes.append(questao_teste)
+
+    owasp_vai = OWASP.objects.get(titulo="Configuração Incorreta de Segurança", ano=2021)
+    owasp_vetor.append(owasp_vai)
+    contador = 0
     for questao in questoes:
-        verificarExistenciaQuestao(questao)
+        print(questao)
+        verificarExistenciaQuestao(questao.name,questao.resposta,owasp_vetor[contador])
+        contador = contador + 1
+
+def criarTop10Owasp():
+        questoes = []
+
+
+
+        class OWASP_teste:
+            def __init__(self, titulo, posicao, ano):
+                self.titulo = titulo
+                self.posicao = posicao
+                self.ano = ano
+
+        questao_teste = OWASP_teste("Quebra de controle de acesso", "1","2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Falhas criptográficas", "2", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Injeção", "3", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Design Inseguro", "4", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Configuração Incorreta de Segurança", "5", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Componentes Vulneráveis e Desatualizados", "6", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Falhas de Identificação e Autenticação", "7", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Falhas de integridade de software e dados", "8", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Falhas de registro e monitoramento de segurança", "9", "2021")
+        questoes.append(questao_teste)
+
+        questao_teste = OWASP_teste("Falsificação de solicitação do lado do servidor (SSRF)", "10", "2021")
+        questoes.append(questao_teste)
+        for questao in questoes:
+            verificarExistenciaOwasp(questao.titulo, questao.posicao,questao.ano)
+
+
+
 
 
 @login_required(login_url='/login/')
-def inicio(request,pagina):
+def inicio(request,pagina,ano):
+    criarTop10Owasp()
     criarQuestoes()
     funcaoCriarPontuacao(request.user.id)
-
-
+    owasps = OWASP.objects.filter(ano=int(ano))
+    pontuacao = Pontuacao.objects.get(usuario = User.objects.get(id = request.user.id)).pontuacao
     print("alouuu")
 
     titulo = "Quebra de controle de acesso"
@@ -162,7 +269,7 @@ def inicio(request,pagina):
         id = int(request.GET['id'])
     except:
         id = request.user.id
-        return redirect(f'/inicio/{pagina}/?id={id}')
+        return redirect(f'/inicio/{pagina}/{ano}/?id={id}')
     try:
         roberto = User.objects.create_user(str("Roberto"),"" , str("Teste1234564"))
         lucas = User.objects.create_user(str("Lucas"),"" , str("78997"))
@@ -174,26 +281,24 @@ def inicio(request,pagina):
         Chat.objects.create(titulo = "Senha", de= capotei,para=lucas,mensagem="Minha senha é: 546789")
         Chat.objects.create(titulo = "Senha", de= lucas,para=roberto,mensagem="Minha senha é: 546789")
 
-        return render(request,'inicio.html',{'pagina':1,'titulo':titulo})
+        return render(request,'inicio.html',{'pagina':1,'titulo':titulo,'pontuacao': pontuacao,'ano':ano,'owasp':owasps})
 
     except:
         if int(pagina) == 1:
             questao = "Quebra de controle de acesso"
-            resposta = QuestaoUsuario.objects.get(usuario = User.objects.get(id=request.user.id),questao=Questao.objects.get(questao = "Quebra de controle de acesso"))
+            resposta = QuestaoUsuario.objects.get(usuario = User.objects.get(id=request.user.id),questao=QuestaoResposta.objects.get(questao = "Quebra de controle de acesso"))
 
 
             chat = Chat.objects.filter(para=User(id))
 
-            return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo,'questao':questao,'resposta':resposta})
+            return render(request,'inicio.html',{'pagina':1,'chat':chat,'titulo':titulo,'questao':questao,'resposta':resposta,'pontuacao': pontuacao,'ano':ano,'owasp':owasps})
         if int(pagina) == 2:
-            titulo = "Falhas Criptograficas"
+            titulo = "Falhas criptográficas"
 
-            return render(request, 'inicio.html', {'titulo': titulo, 'pagina': 2})
 
         if int(pagina) == 3:
             titulo = "Injeção"
 
-            return render(request, 'inicio.html', {'titulo': titulo, 'pagina': 3})
 
 
 
@@ -201,42 +306,46 @@ def inicio(request,pagina):
             titulo = "Design Inseguro"
 
 
-            return render(request, 'inicio.html', {'pagina': 4, 'titulo': titulo})
 
         if int(pagina) == 5:
             titulo = "Configuração Incorreta de Segurança"
 
 
-            return render(request, 'inicio.html', {'pagina': 5, 'titulo': titulo})
 
         if int(pagina) == 6:
             titulo = "Componentes Vulneráveis e Desatualizados"
-            return render(request, 'inicio.html', {'pagina': 6,  'titulo': titulo})
 
         if int(pagina) == 7:
             titulo = "Falhas de Identificação e Autenticação"
 
-            return render(request, 'inicio.html', {'pagina': 7,  'titulo': titulo})
 
         if int(pagina) == 8:
             titulo = "Falhas de integridade de software e dados"
 
-            return render(request, 'inicio.html', {'pagina': 8,  'titulo': titulo})
 
         if int(pagina) == 9:
             titulo = "Falhas de registro e monitoramento de segurança"
 
-            return render(request, 'inicio.html', {'pagina': 9,  'titulo': titulo})
 
         if int(pagina) == 10:
             titulo = "Falsificação de solicitação do lado do servidor (SSRF)"
-            return render(request, 'inicio.html', {'pagina': 10,  'titulo': titulo})
+        return render(request, 'inicio.html', {'pagina': int(pagina),  'titulo': titulo,'pontuacao': pontuacao,'ano':ano,'owasp':owasps})
 
 
 
 @login_required(login_url='/login/')
 def telainicial(request):
-    return render(request, 'telainicial.html')
+
+    ano  = 2021
+    return render(request, 'telainicial.html',{'ano': ano})
+
+
+
+@login_required(login_url='/login/')
+def telainicial(request):
+    ano = 2021
+    return render(request, 'telainicial.html',{'ano':ano})
+
 
 
 @login_required(login_url='/login/')

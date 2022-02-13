@@ -29,8 +29,12 @@ urlpatterns = [
                   path('inicio/',views.telainicial),
                   path('vuln3/submit', views.vuln3_submit),
 
+                path('inicio/<pagina>/<ano>/', views.inicio),
+                  path('inicio/<pagina>/<ano>/resposta', views.resposta),
+
                   path('inicio/<pagina>/', views.inicio),
                   path('inicio/<pagina>/resposta', views.resposta),
+                  #path('inicio/<pagina>/submit', views.submit_teste),
 
                   path('parte1/administrador', views.adminsite),
 
