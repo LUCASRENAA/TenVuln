@@ -1,0 +1,109 @@
+<scritpt>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</scritpt>
+
+
+ <form action ="resposta" method="post">{% csrf_token %}
+<h1>Pergunta: <label>{{ testesss.questao }}</label> </h1>
+
+     {% if testesss.tipo == 0 %}
+     Clique aqui o link do desafio: <a href="/desafios/htmls/{{ testesss.upload }}">{{ testesss.popTemplates }}</a>
+
+     {% endif %}
+     <p></p>
+<textarea class="teste2" disabled wrap="hard" cols="300" rows="500" style="width:100%;">{{ testesss.descricao }}</textarea>
+
+     {% for b in textos %}
+     {% if b.tipo == 1 %}
+        <input id="respostaid{{ b.id }}" class="form-control resposta">
+     {% endif %}
+{% if b.tipo == 0 %}
+        <label>{{ b.texto }}</label>
+     {% endif %}
+
+
+     {% endfor %}
+
+     <h1>Resposta:</h1>
+        <input id="resposta{{ testesss.id }}" class="form-control">
+             <input id="id{{ testesss.id }}" class="form-control" value="{{ testesss.id }}"  hidden>
+
+     <p></p>
+
+<button type="button" class="form-control btn btn-dark" data-toggle="modal" data-target="#exampleModal{{ mensagens.id }}2" onclick="enviarResposta{{ testesss.id }}()">
+  <p>Salvar</p>
+</button>
+</form>
+<script>
+
+    function enviarResposta{{ testesss.id }}() {
+
+seila = "";
+var x = document.getElementsByClassName('resposta');
+for (var i = 0; i < x.length; i++) {
+    if (i!=0){
+        seila = seila + ":" + x[i].value
+}
+
+        if (i===0){
+                seila = seila  + x[i].value
+}
+
+}
+
+if (document.getElementById("resposta{{ testesss.id }}").value  === '')
+{
+document.getElementById("resposta{{ testesss.id }}").value = seila
+}
+var elemento = document.getElementById("resposta{{ testesss.id }}").value;
+var id = document.getElementById("id{{ testesss.id }}").value;
+
+ $.ajax({
+ method: "POST",
+ url: "resposta",
+ data: { resposta: elemento,id: id,csrfmiddlewaretoken:"{{ csrf_token }}" },
+  beforeSend : function(){
+          $("#demo").html("ENVIANDO...");
+     }
+})
+.done(function(msg){
+     $("#demo").html(msg);
+     document.getElementById("girando").remove();
+})
+.fail(function(jqXHR, textStatus, msg){
+     alert(msg);
+     document.getElementById("girando").remove();
+
+
+});
+}
+</script>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ mensagens.id }}2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2"><p>Carregando...</p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<div class="spinner-border" role="status" id="girando">
+  <span class="visually-hidden"></span>
+</div>
+          <p id="demo"></p>
+
+      </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

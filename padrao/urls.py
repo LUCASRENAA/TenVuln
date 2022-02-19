@@ -30,7 +30,10 @@ urlpatterns = [
                   path('vuln3/submit', views.vuln3_submit),
 
                 path('inicio/<pagina>/<ano>/', views.inicio),
-                  path('inicio/<pagina>/<ano>/resposta', views.resposta),
+
+path('desafios/htmls/templates/<titulo>/', views.funcaoRespostas),
+
+path('inicio/<pagina>/<ano>/resposta', views.resposta),
 
                   path('inicio/<pagina>/', views.inicio),
                   path('inicio/<pagina>/resposta', views.resposta),

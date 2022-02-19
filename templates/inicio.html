@@ -169,7 +169,11 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">{{ titulo }}</h1> Sua pontuação: {{ pontuacao }}
+        <h1 class="h2">
+                                {% for owaspi in owasp %}
+      {% if owaspi.posicao == pagina %}{{ owaspi.titulo }}
+        {% endif %}
+        {% endfor %}</h1> Sua pontuação: {{ pontuacao }}
 
           {% if  resposta.boleean == False %}
           <p></p>
@@ -182,55 +186,93 @@
 
         </div>
       </div>
+        <style>
+            .teste2 {
+    padding:10px;
+    border:1px solid #000;
+    float:left;
+    margin-right:20px;
 
-        {% if pagina == 1 %}
- {% include "vulnerabilidade1.html" %}
+    max-width:2000px;
+    max-height:300px;
+    overflow:auto;
+}
+        </style>
+                            {% for owaspi in owasp %}
+
+        {% if owaspi.posicao == pagina %}
+<textarea class="teste2" disabled wrap="hard" cols="300" rows="500" style="width:100%;">{{ owaspi.descricao }}</textarea>
         {% endif %}
+        {% endfor %}
+<p></p>
 
-           {% if pagina == 2 %}
- {% include "vulnerabilidade2.html" %}
-        {% endif %}
-
-
-                   {% if pagina == 3 %}
- {% include "vulnerabilidade3.html" %}
-        {% endif %}
-
-            {% if pagina == 4 %}
- {% include "vulnerabilidade4.html" %}
-        {% endif %}
+        {% for testesss in respostas %}
+           {% for mensagens in chat %}
 
 
-            {% if pagina == 5 %}
- {% include "vulnerabilidade5.html" %}
-        {% endif %}
-
-            {% if pagina == 6 %}
- {% include "vulnerabilidade6.html" %}
-        {% endif %}
 
 
-            {% if pagina == 7 %}
- {% include "vulnerabilidade7.html" %}
-        {% endif %}
 
-            {% if pagina == 8 %}
- {% include "vulnerabilidade8.html" %}
-        {% endif %}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal23{{ mensagens.id }}">
+  <p>De: {{ mensagens.de }} ({{ mensagens.id }})</p>
+</button>
 
-            {% if pagina == 9 %}
- {% include "vulnerabilidade9.html" %}
-        {% endif %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal23{{ mensagens.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">De: {{ mensagens.de }} <p>Para: {{ mensagens.para }}</p></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+               <p > {{ mensagens.mensagem }} </p>
 
-            {% if pagina == 10 %}
- {% include "vulnerabilidade10.html" %}
-        {% endif %}
+      </div>
+      <div class="modal-footer">
+
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {% endfor %}
+ {% include "owaspresposta.html" %}
+
+ {% endfor %}
 <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
   <script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
   {% include "padrao_fim.html" %}
+
+    </main>
+  </div>
+</div>
+<table class="table">
+  <tr>
+    <th>Usuario</th>
+    <th>Pontuação</th>
+
+  </tr>
+{% for rank in ranking %}
+
+     <tr>
+    <td>{{ rank.usuario }}
+</td>
+    <td> {{ rank.pontuacao }}
+</td>
+
+  </tr>
+
+{% endfor %}
+    </table>
 
 
 </body>
